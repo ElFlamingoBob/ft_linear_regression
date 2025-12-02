@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 x_subject = ""
 y_subject = ""
 
-
 def normalizeData(data):
 	data_scaled = data.copy()
 	for column in data_scaled.columns:
@@ -45,7 +44,6 @@ def costFunction():
 		total_errors += ( hypothesisFunction(x) - y ) ** 2
 	final_cost = total_errors / (2 * m)
 	return final_cost
-
 
 def gradientDescent():
 	m = len(data_scaled)
@@ -87,14 +85,17 @@ def plotData():
 def main():
 	cost = costFunction()
 
-	for i in range(1000):
+	for i in range(10000) or cost == costFunction():
 		gradientDescent()
-		cost = costFunction()
+		new_cost = costFunction()
+		if new_cost == cost:
+			print(f"Converged after {i} iterations.")
+			break
+		cost = new_cost
 	print ("Theta0:", theta0)
 	print ("Theta1:", theta1)
 	print ("Final cost:", cost)
 	
-
 	plotData()
 	root = tk.Tk()
 	root.withdraw()
@@ -112,3 +113,9 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+# 100 iterations :  50 sqr =   557 427	| 1000 iterations :  50 sqr =   557 405
+# 100 iterations : 100 sqr = 1 080 819	| 1000 iterations : 100 sqr = 1 080 812
+# 100 iterations : 250 sqr = 2 650 996	| 1000 iterations : 250 sqr = 2 651 031
+
+

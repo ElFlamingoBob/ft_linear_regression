@@ -10,9 +10,12 @@
 		"popup_error_message": "Please enter a valid number for the car's mileage.",
 		"plot_config": {
 			"x_label": "Mileage (K km)",
-			"y_label": "Price (M euros)",
-			"title": "Car Price vs Mileage"
-		}
+			"y_label": "Price (euros)",
+			"title": "Car Price vs Mileage",
+			"ex_curve_title": "Price for each iteration for mileage of 100,000 km"
+		},
+		"ex_curve_x_value": 100000
+
 	},
 	"paris_housing.csv": {
 		"root_title": "Paris Housing Predictor - Training Configuration",
@@ -26,8 +29,11 @@
 		"plot_config": {
 			"x_label": "House Size (m²)",
 			"y_label": "Price (euros)",
-			"title": "Paris Housing Price vs Size"
-		}
+			"title": "Paris Housing Price vs Size",
+			"ex_curve_title": "Price for each iteration for house size of 75 m²"
+		},
+		"ex_curve_x_value": 75
+
 	}
 
 

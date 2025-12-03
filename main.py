@@ -71,6 +71,7 @@ def handleInput(input_km):
 	return predicted_price
 
 def plotData(config):
+	plt.figure()
 	x_values = data[x_subject]
 	y_values = data[y_subject]
 	plt.scatter(x_values, y_values, color='blue', label='Data Points')
@@ -94,9 +95,6 @@ def predict_button_clicked(input, entry_widget, config):
 		messagebox.showerror(config['popup_error_title'], config['popup_error_message'])
 	entry_widget.delete(0, tk.END)
 
-def plot_button_clicked(config):
-	plotData(config)
-
 def clear_window(root):
 	for widget in root.winfo_children():
 		widget.destroy()
@@ -114,32 +112,40 @@ def param_button_clicked(param_cost):
 	tk.Label(popup, text=final_cost_text, justify=tk.CENTER, font=("Arial", 12, "bold")).pack(padx=20, pady=5)
 	tk.Label(popup, text=iterations_text, justify=tk.CENTER, font=("Arial", 12, "bold")).pack(padx=20, pady=5)
 
+def plotTest(config, exCurveData):
+	plt.figure()
+	plt.plot(range(len(exCurveData)), exCurveData, color='green', label='Ex Curve')
+	plt.xlabel("Iterations")
+	plt.ylabel(config["plot_config"]["y_label"])
+	plt.title(config["plot_config"]["ex_curve_title"])
+	plt.legend()
+	plt.show()
 
 def display_post_training_window(root, config, param_cost):
 	clear_window(root)
-	tk.Button(root, text="Display Plot", command=lambda: plot_button_clicked(config)).grid(row=0, column=0, pady=5)
+	tk.Button(root, text="Display Plot", command=lambda: plotData(config)).grid(row=0, column=0, pady=5)
 	tk.Button(root, text="Display Parameters and Cost", command=lambda: param_button_clicked(param_cost)).grid(row=0, column=1, pady=5)
+	tk.Button(root, text="Ex Curve", command =lambda: plotTest(config, param_cost['exCurveData'])).grid(row=0, column=2, pady=5)
 	tk.Label(root, text=config['entry_label']).grid(row=1, column=0)
 	input = tk.Entry(root)
 	input.grid(row=1, column=1)
 	tk.Button(root, text=config['predict_button_text'], command=lambda: predict_button_clicked(input.get(), input, config)).grid(row=1, column=2)
 
-
 def start_training(alpha, root, config):
 	iterations = 0
+	exCurveData = []
 	cost = costFunction()
 
 	for i in range(10000) or cost == costFunction():
 		gradientDescent(alpha=alpha)
+		exCurveData.append(hypothesisFunction((config['ex_curve_x_value'] - data[x_subject].mean()) / data[x_subject].std()) * std_price + mean_price)
 		new_cost = costFunction()
 		if new_cost == cost:
 			iterations = i
 			break
 		cost = new_cost
-	param_cost = {'theta0': theta0, 'theta1': theta1, 'cost': cost, 'iterations': iterations}
-	print(theta0, theta1, cost, iterations)
+	param_cost = {'theta0': theta0, 'theta1': theta1, 'cost': cost, 'iterations': iterations, 'exCurveData': exCurveData}
 	display_post_training_window(root, config, param_cost)
-	
 
 def setup_preConfig(root, filename):
 	global data, data_scaled, mean_price, std_price

@@ -1,0 +1,34 @@
+{
+	"car_mileage.csv": {
+		"root_title": "Car Price Predictor - Training Configuration",
+		"post_training_message_title": "Car Price Predictor - Predicition",
+		"entry_label": "Enter the car's mileage (in km):",
+		"predict_button_text": "Predict Price",
+		"popup_prediction_title": "Prediction Result",
+		"popup_prediction_message": "The predicted price for a car with {x} km is: {y} euros.",
+		"popup_error_title": "Input Error",
+		"popup_error_message": "Please enter a valid number for the car's mileage.",
+		"plot_config": {
+			"x_label": "Mileage (K km)",
+			"y_label": "Price (M euros)",
+			"title": "Car Price vs Mileage"
+		}
+	},
+	"paris_housing.csv": {
+		"root_title": "Paris Housing Predictor - Training Configuration",
+		"post_training_message_title": "Paris Housing Predictor - Predicition",
+		"entry_label": "Enter the house size (in m²):",
+		"predict_button_text": "Predict Price",
+		"popup_prediction_title": "Prediction Result",
+		"popup_prediction_message": "The predicted price for a house of {x} m² is: {y} euros.",
+		"popup_error_title": "Input Error",
+		"popup_error_message": "Please enter a valid number for the house size.",
+		"plot_config": {
+			"x_label": "House Size (m²)",
+			"y_label": "Price (euros)",
+			"title": "Paris Housing Price vs Size"
+		}
+	}
+
+
+}

@@ -101,11 +101,11 @@ def clear_window(root):
 
 def param_button_clicked(param_cost):
 	popup = tk.Toplevel()
-	popup.title("Parameters and Cost")
+	popup.title("Parameters and RMSE")
 	popup.geometry("500x150")
 	theta0_text = f"θ0: {param_cost['theta0']}"
 	theta1_text = f"θ1: {param_cost['theta1']}"
-	final_cost_text = f"Final Cost: {param_cost['cost']}"
+	final_cost_text = f"RMSE: {param_cost['rmse']}"
 	iterations_text = f"Iterations: {param_cost['iterations']}"
 	tk.Label(popup, text=theta0_text, justify=tk.CENTER, font=("Arial", 12, "bold")).pack(padx=20, pady=5, ipady=5)
 	tk.Label(popup, text=theta1_text, justify=tk.CENTER, font=("Arial", 12, "bold")).pack(padx=20, pady=5)
@@ -124,7 +124,7 @@ def plotTest(config, exCurveData):
 def display_post_training_window(root, config, param_cost):
 	clear_window(root)
 	tk.Button(root, text="Display Plot", command=lambda: plotData(config)).grid(row=0, column=0, pady=5)
-	tk.Button(root, text="Display Parameters and Cost", command=lambda: param_button_clicked(param_cost)).grid(row=0, column=1, pady=5)
+	tk.Button(root, text="Display Parameters and RMSE", command=lambda: param_button_clicked(param_cost)).grid(row=0, column=1, pady=5)
 	tk.Button(root, text="Ex Curve", command =lambda: plotTest(config, param_cost['exCurveData'])).grid(row=0, column=2, pady=5)
 	tk.Label(root, text=config['entry_label']).grid(row=1, column=0)
 	input = tk.Entry(root)
@@ -144,7 +144,8 @@ def start_training(alpha, root, config):
 			iterations = i
 			break
 		cost = new_cost
-	param_cost = {'theta0': theta0, 'theta1': theta1, 'cost': cost, 'iterations': iterations, 'exCurveData': exCurveData}
+	real_rmse = ((2 * cost) * (std_price ** 2)) ** 0.5
+	param_cost = {'theta0': theta0, 'theta1': theta1, 'rmse': real_rmse, 'iterations': iterations, 'exCurveData': exCurveData}
 	display_post_training_window(root, config, param_cost)
 
 def setup_preConfig(root, filename):

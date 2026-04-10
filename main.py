@@ -12,7 +12,7 @@ def load_config(filename):
 		config = json.load(file)
 	return config
 
-def normalizeData(data):
+def normalizeData(data): # Z-score normalization (μ=0, σ=1)
 	data_scaled = data.copy()
 	for column in data_scaled.columns:
 		mean = data_scaled[column].mean()
@@ -42,7 +42,7 @@ theta1 = 0.0
 def hypothesisFunction(x):
 	return theta0 + ( theta1 * x )
 
-def costFunction():
+def costFunction(): # Mean Squared Error (MSE)
 	m = len(data_scaled)
 	total_errors = 0.0
 	for x, y in data_scaled.itertuples(index=False):
@@ -66,9 +66,7 @@ def handleInput(input_km):
 	km_value = float(input_km)
 	normalized_km = (km_value - data[x_subject].mean()) / data[x_subject].std()
 	predicted_price = round((hypothesisFunction(normalized_km) * std_price) + mean_price)
-	if predicted_price < 0:
-		predicted_price = 37
-	return predicted_price
+	return predicted_price if predicted_price > 0 else 37
 
 def plotData(config):
 	plt.figure()
@@ -136,7 +134,7 @@ def start_training(alpha, root, config):
 	exCurveData = []
 	cost = costFunction()
 
-	for i in range(10000) or cost == costFunction():
+	for i in range(10000):
 		gradientDescent(alpha=alpha)
 		exCurveData.append(hypothesisFunction((config['ex_curve_x_value'] - data[x_subject].mean()) / data[x_subject].std()) * std_price + mean_price)
 		new_cost = costFunction()
@@ -177,14 +175,7 @@ def setup_gui():
 	choose_file(root)
 	root.mainloop()
 
-def main():
-	setup_gui()
-
 if __name__ == "__main__":
-	main()
-
-# 100 iterations :  50 sqr =   557 427	| 1000 iterations :  50 sqr =   557 405
-# 100 iterations : 100 sqr = 1 080 819	| 1000 iterations : 100 sqr = 1 080 812
-# 100 iterations : 250 sqr = 2 650 996	| 1000 iterations : 250 sqr = 2 651 031
+	setup_gui()
 
 

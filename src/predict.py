@@ -12,8 +12,13 @@ class LinearRegressionPredictor:
 		self.y_std = model['y_std']
 
 	def load_model(self, filename):
-		with open(filename, "r") as file:
-			model = json.load(file)
+		try:
+			with open(filename, "r") as file:
+				model = json.load(file)
+		except FileNotFoundError:
+			raise FileNotFoundError(f"Model file '{filename}' not found.")
+		except json.JSONDecodeError:
+			raise ValueError(f"Model file '{filename}' is not a valid JSON.")
 		return model
 	
 	def hypothesisFunction(self, x):
